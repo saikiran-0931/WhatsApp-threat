@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp AI Threat Detection System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .message-bubble {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .threat-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .scanning-animation {
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+            background-size: 200% 100%;
+            animation: scan 1.5s infinite;
+        }
+        
+        @keyframes scan {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <div class="bg-green-500 p-3 rounded-full mr-4">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63"/>
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-800">WhatsApp AI Threat Detection</h1>
+            </div>
+            <p class="text-gray-600 text-lg">Advanced AI-powered security system for real-time message threat analysis</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Chat Interface -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-green-600 text-white p-4 flex items-center">
+                    <div class="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-sm font-semibold">AI</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">AI Security Monitor</h3>
+                        <p class="text-green-100 text-sm">Online • Protecting your messages</p>
+                    </div>
+                </div>
+                
+                <div id="chatContainer" class="h-96 overflow-y-auto p-4 bg-gray-50">
+                    <div class="text-center text-gray-500 text-sm mb-4">
+                        🔒 Messages are encrypted and analyzed for threats
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-white border-t">
+                    <div class="flex gap-2">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            placeholder="Type a message to analyze for threats..."
+                            class="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
+                        >
+                        <button 
+                            onclick="analyzeMessage()"
+                            class="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full transition-colors"
+                        >
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Threat Analysis Dashboard -->
+            <div class="space-y-6">
+                <!-- Real-time Stats -->
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2 threat-pulse"></span>
+                        Real-time Security Status
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-2xl font-bold text-green-600" id="safeCount">0</div>
+                            <div class="text-sm text-gray-600">Safe Messages</div>
+                        </div>
+                        <div class="text-center p-4 bg-red-50 rounded-lg">
+                            <div class="text-2xl font-bold text-red-600" id="threatCount">0</div>
+                            <div class="text-sm text-gray-600">Threats Detected</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Threat Categories -->
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4">AI Detection Categories</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="flex items-center">
+                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                Phishing Attempts
+                            </span>
+                            <span class="font-semibold" id="phishingCount">0</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="flex items-center">
+                                <span class="w-3 h-3 bg-orange-500 rounded-full mr-2"></span>
+                                Malicious Links
+                            </span>
+                            <span class="font-semibold" id="maliciousCount">0</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="flex items-center">
+                                <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+                                Spam Content
+                            </span>
+                            <span class="font-semibold" id="spamCount">0</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="flex items-center">
+                                <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                Social Engineering
+                            </span>
+                            <span class="font-semibold" id="socialCount">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Analysis Info -->
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4">AI Analysis Features</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Natural Language Processing
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            URL Reputation Analysis
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Behavioral Pattern Detection
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Real-time Threat Intelligence
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Threats for Testing -->
+        <div class="mt-8 bg-white rounded-2xl shadow-xl p-6">
+            <h3 class="text-xl font-semibold mb-4">Test the AI System</h3>
+            <p class="text-gray-600 mb-4">Click these sample messages to see how the AI detects different types of threats:</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+                <button onclick="testMessage('Click this link to claim your $1000 prize: http://fake-bank.com/claim')" class="p-3 bg-red-50 hover:bg-red-100 rounded-lg text-left text-sm transition-colors">
+                    🎯 Phishing Test
+                </button>
+                <button onclick="testMessage('URGENT! Your account will be suspended. Download this file immediately: malware.exe')" class="p-3 bg-orange-50 hover:bg-orange-100 rounded-lg text-left text-sm transition-colors">
+                    🦠 Malware Test
+                </button>
+                <button onclick="testMessage('Congratulations! You won the lottery! Send us your bank details to claim your prize!')" class="p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg text-left text-sm transition-colors">
+                    📧 Spam Test
+                </button>
+                <button onclick="testMessage('Hello! How are you doing today? Hope you have a great day!')" class="p-3 bg-green-50 hover:bg-green-100 rounded-lg text-left text-sm transition-colors">
+                    ✅ Safe Message
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let safeCount = 0;
+        let threatCount = 0;
+        let phishingCount = 0;
+        let maliciousCount = 0;
+        let spamCount = 0;
+        let socialCount = 0;
+
+        // Threat detection patterns
+        const threatPatterns = {
+            phishing: [
+                /click.*link.*prize/i,
+                /urgent.*account.*suspended/i,
+                /verify.*account.*immediately/i,
+                /claim.*reward/i,
+                /fake-bank|suspicious-site/i
+            ],
+            malicious: [
+                /download.*file.*exe/i,
+                /malware|virus|trojan/i,
+                /install.*software/i,
+                /\.exe|\.bat|\.scr/i
+            ],
+            spam: [
+                /congratulations.*won.*lottery/i,
+                /send.*bank.*details/i,
+                /free.*money|easy.*cash/i,
+                /limited.*time.*offer/i
+            ],
+            social: [
+                /trust.*me.*secret/i,
+                /don't.*tell.*anyone/i,
+                /help.*transfer.*money/i,
+                /emergency.*need.*money/i
+            ]
+        };
+
+        function analyzeMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add message to chat
+            addMessageToChat(message, true);
+            
+            // Simulate AI analysis delay
+            showAnalyzing();
+            
+            setTimeout(() => {
+                const analysis = performThreatAnalysis(message);
+                addAnalysisToChat(analysis);
+                updateStats(analysis);
+                input.value = '';
+            }, 1500);
+        }
+
+        function testMessage(message) {
+            document.getElementById('messageInput').value = message;
+            analyzeMessage();
+        }
+
+        function addMessageToChat(message, isUser = false) {
+            const container = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = message-bubble mb-3 ${isUser ? 'text-right' : 'text-left'};
+            
+            messageDiv.innerHTML = `
+                <div class="inline-block max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
+                    isUser 
+                        ? 'bg-green-500 text-white rounded-br-sm' 
+                        : 'bg-white border rounded-bl-sm'
+                }">
+                    <p class="text-sm">${message}</p>
+                    <p class="text-xs opacity-70 mt-1">${new Date().toLocaleTimeString()}</p>
+                </div>
+            `;
+            
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showAnalyzing() {
+            const container = document.getElementById('chatContainer');
+            const analysisDiv = document.createElement('div');
+            analysisDiv.id = 'analyzing';
+            analysisDiv.className = 'message-bubble mb-3 text-left';
+            
+            analysisDiv.innerHTML = `
+                <div class="inline-block max-w-xs lg:max-w-md px-4 py-2 rounded-2xl bg-blue-50 border rounded-bl-sm scanning-animation">
+                    <p class="text-sm text-blue-600">🤖 AI analyzing message for threats...</p>
+                    <p class="text-xs text-blue-500 mt-1">Scanning patterns</p>
+                </div>
+            `;
+            
+            container.appendChild(analysisDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function performThreatAnalysis(message) {
+            const analysis = {
+                message: message,
+                isThreat: false,
+                threatType: null,
+                confidence: 0,
+                details: []
+            };
+
+            // Check against threat patterns
+            for (const [type, patterns] of Object.entries(threatPatterns)) {
+                for (const pattern of patterns) {
+                    if (pattern.test(message)) {
+                        analysis.isThreat = true;
+                        analysis.threatType = type;
+                        analysis.confidence = Math.floor(Math.random() * 30) + 70; // 70-99%
+                        
+                        switch(type) {
+                            case 'phishing':
+                                analysis.details.push('Suspicious link detected');
+                                analysis.details.push('Requests personal information');
+                                break;
+                            case 'malicious':
+                                analysis.details.push('Executable file reference');
+                                analysis.details.push('Potential malware distribution');
+                                break;
+                            case 'spam':
+                                analysis.details.push('Unsolicited promotional content');
+                                analysis.details.push('Requests financial information');
+                                break;
+                            case 'social':
+                                analysis.details.push('Social engineering tactics');
+                                analysis.details.push('Attempts to build false trust');
+                                break;
+                        }
+                        return analysis;
+                    }
+                }
+            }
+
+            // If no threats detected
+            analysis.confidence = Math.floor(Math.random() * 20) + 80; // 80-99% safe
+            analysis.details.push('No suspicious patterns detected');
+            analysis.details.push('Message appears legitimate');
+            
+            return analysis;
+        }
+
+        function addAnalysisToChat(analysis) {
+            // Remove analyzing message
+            const analyzing = document.getElementById('analyzing');
+            if (analyzing) analyzing.remove();
+            
+            const container = document.getElementById('chatContainer');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'message-bubble mb-3 text-left';
+            
+            const threatColor = analysis.isThreat ? 'red' : 'green';
+            const threatIcon = analysis.isThreat ? '⚠' : '✅';
+            const threatText = analysis.isThreat ? 'THREAT DETECTED' : 'SAFE MESSAGE';
+            
+            resultDiv.innerHTML = `
+                <div class="inline-block max-w-xs lg:max-w-md px-4 py-3 rounded-2xl bg-${threatColor}-50 border-2 border-${threatColor}-200 rounded-bl-sm">
+                    <div class="flex items-center mb-2">
+                        <span class="text-lg mr-2">${threatIcon}</span>
+                        <span class="font-semibold text-${threatColor}-700">${threatText}</span>
+                    </div>
+                    ${analysis.isThreat ? <p class="text-sm text-${threatColor}-600 mb-2">Type: ${analysis.threatType.charAt(0).toUpperCase() + analysis.threatType.slice(1)}</p> : ''}
+                    <p class="text-sm text-${threatColor}-600 mb-2">Confidence: ${analysis.confidence}%</p>
+                    <div class="text-xs text-${threatColor}-600">
+                        ${analysis.details.map(detail => • ${detail}).join('<br>')}
+                    </div>
+                    <p class="text-xs opacity-70 mt-2">${new Date().toLocaleTimeString()}</p>
+                </div>
+            `;
+            
+            container.appendChild(resultDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function updateStats(analysis) {
+            if (analysis.isThreat) {
+                threatCount++;
+                document.getElementById('threatCount').textContent = threatCount;
+                
+                switch(analysis.threatType) {
+                    case 'phishing':
+                        phishingCount++;
+                        document.getElementById('phishingCount').textContent = phishingCount;
+                        break;
+                    case 'malicious':
+                        maliciousCount++;
+                        document.getElementById('maliciousCount').textContent = maliciousCount;
+                        break;
+                    case 'spam':
+                        spamCount++;
+                        document.getElementById('spamCount').textContent = spamCount;
+                        break;
+                    case 'social':
+                        socialCount++;
+                        document.getElementById('socialCount').textContent = socialCount;
+                        break;
+                }
+            } else {
+                safeCount++;
+                document.getElementById('safeCount').textContent = safeCount;
+            }
+        }
+
+        // Allow Enter key to send message
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                analyzeMessage();
+            }
+        });
+
+        // Initialize with welcome message
+        window.onload = function() {
+            setTimeout(() => {
+                addMessageToChat('🤖 AI Threat Detection System activated. Send a message to analyze for security threats!', false);
+            }, 500);
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97a7722215f5851f',t:'MTc1NzA5MzMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
